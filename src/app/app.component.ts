@@ -14,8 +14,8 @@ export class AppComponent {
   private interval: number;
   private tempDirection: number;
   private default_mode = 'classic';
-  private isGameOver = false;
-
+  
+  public isGameOver = false;
   public all_modes = GAME_MODES;
   public getKeys = Object.keys;
   public board = [];
@@ -47,7 +47,12 @@ export class AppComponent {
     this.setBoard();
   }
 
-  handleKeyboardEvents(e: KeyboardEvent) {
+  handleMobileEvents(e: any) {
+    console.log(JSON.stringify(e));
+  }
+
+  handleKeyboardEvents(e: any) {
+    console.log(JSON.stringify(e));
     if (e.keyCode === CONTROLS.LEFT && this.snake.direction !== CONTROLS.RIGHT) {
       this.tempDirection = CONTROLS.LEFT;
     } else if (e.keyCode === CONTROLS.UP && this.snake.direction !== CONTROLS.DOWN) {
@@ -197,13 +202,13 @@ export class AppComponent {
 
   eatFruit(): void {
     this.score++;
-
     let tail = Object.assign({}, this.snake.parts[this.snake.parts.length - 1]);
 
     this.snake.parts.push(tail);
     this.resetFruit();
 
-    if (this.score % 5 === 0) {
+    console.log("interval: " + this.interval);
+    if (this.score % 5 === 0 && this.interval > 80) {
       this.interval -= 15;
     }
   }

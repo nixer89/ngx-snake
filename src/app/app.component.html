@@ -1,17 +1,48 @@
-<div class="game-container">
-  <div class="game-header">
-    <h3 class="logo">ngx-Snake</h3>
-    <div class="score-block">
-      <h3 class="score" [ngClass]="{'new-best-score': newBestScore}">Score: {{score}}</h3>
-      <h3 class="best-score" [ngClass]="{'new-best-score': newBestScore}">Best Score: {{best_score}}</h3>
+<mat-card
+  (swipeleft)='handleKeyboardEvents({keyCode:37})'
+  (swipeup)='handleKeyboardEvents({keyCode:38})'
+  (swiperight)='handleKeyboardEvents({keyCode:39})'
+  (swipedown)='handleKeyboardEvents({keyCode:40})'>
+  <div class="game-container">
+    <div class="game-header">
+      <h3 class="logo">XRPSnake 9</h3>
+      <div class="score-block">
+        <h3 class="score" [ngClass]="{'new-best-score': newBestScore}">Score: {{score}}</h3>
+        <h3 class="best-score" [ngClass]="{'new-best-score': newBestScore}">Best Score: {{best_score}}</h3>
+      </div>
+    </div>
+    <div class="row" *ngFor="let column of board; let i = index;">
+      <div class="column" [ngStyle]="{'background-color': setColors(i, j)}" *ngFor="let row of column; let j = index"></div>
+    </div>
+    <div fxHide fxShow.gt-md>
+        <div class="start-button" [ngClass]="{'disable-clicks': gameStarted}" (click)="showMenu()">Start Game</div>
+    </div>
+    <div fxShow fxHide.gt-md>
+        <div *ngIf="!gameStarted" class="start-button" [ngClass]="{'disable-clicks': gameStarted}" (click)="showMenu()">Start Game</div>
+        <div *ngIf="!isGameOver && gameStarted" style="display:flex; justify-content: center; padding: 0.5em;">
+          <div style="display:flex; align-items: center; margin-right:1em;">
+            <button mat-icon-button (click)="handleKeyboardEvents({keyCode:37})">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+          </div>
+          <div fxLayout="column" fxGap>
+            <button mat-icon-button style="margin-bottom: 2em;" (click)="handleKeyboardEvents({keyCode:38})">
+                <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button mat-icon-button (click)="handleKeyboardEvents({keyCode:40})">
+                <mat-icon>arrow_downward</mat-icon>
+            </button>
+          </div>
+          <div style="display:flex; align-items: center; margin-left:1em;">
+            <button mat-icon-button (click)="handleKeyboardEvents({keyCode:39})">
+                <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+    </div>
+    <div class="new-game-menu" *ngIf="showMenuChecker">
+      <span class="new-game-menu-label">Select Mode</span>
+      <div class="start-button new-game-button" (click)="newGame(mode)" *ngFor="let mode of getKeys(all_modes)">{{all_modes[mode]}}</div>
     </div>
   </div>
-  <div class="row" *ngFor="let column of board; let i = index;">
-    <div class="column" [ngStyle]="{'background-color': setColors(i, j)}" *ngFor="let row of column; let j = index"></div>
-  </div>
-  <div class="start-button" [ngClass]="{'disable-clicks': gameStarted}" (click)="showMenu()">Start Game</div>
-  <div class="new-game-menu" *ngIf="showMenuChecker">
-    <span class="new-game-menu-label">Select Mode</span>
-    <div class="start-button new-game-button" (click)="newGame(mode)" *ngFor="let mode of getKeys(all_modes)">{{all_modes[mode]}}</div>
-  </div>
-</div>
+</mat-card>
